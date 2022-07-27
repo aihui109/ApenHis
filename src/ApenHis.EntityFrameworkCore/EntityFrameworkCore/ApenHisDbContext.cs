@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ApenHis.EntityCfgs;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -74,6 +75,8 @@ public class ApenHisDbContext :
         builder.ConfigureTenantManagement();
 
         /* Configure your own tables/entities inside here */
+
+        builder.ApplyConfigurationsFromAssembly(typeof(ApenHisDbContext).Assembly);
 
         //builder.Entity<YourEntity>(b =>
         //{

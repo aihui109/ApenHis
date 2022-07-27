@@ -50,10 +50,10 @@ public class ApenHisHttpApiHostModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
-        PreConfigure<IdentityBuilder>(builder =>
-        {
+        //PreConfigure<IdentityBuilder>(builder =>
+        //{
             
-        });
+        //});
     }
 
     public override void ConfigureServices(ServiceConfigurationContext context)
