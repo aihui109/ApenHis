@@ -1,4 +1,5 @@
-﻿using ApenHis.EntityCfgs;
+﻿using ApenHis.Entities;
+using ApenHis.EntityCfgs;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -50,6 +51,9 @@ public class ApenHisDbContext :
     // Tenant Management
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
+
+    public DbSet<Feature> Features { get; set; }
+    public DbSet<RoleFeature> RoleFeatures { get; set; }
 
     #endregion
 
