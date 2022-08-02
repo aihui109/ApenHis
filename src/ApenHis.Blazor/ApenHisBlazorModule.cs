@@ -35,7 +35,7 @@ public class ApenHisBlazorModule : AbpModule
 
         ConfigureAuthentication(builder);
         ConfigureHttpClient(context, environment);
-        ConfigureBlazorise(context);
+        ConfigureAntDesign(context);
         ConfigureRouter(context);
         ConfigureUI(builder);
         ConfigureMenu(context);
@@ -58,7 +58,7 @@ public class ApenHisBlazorModule : AbpModule
         });
     }
 
-    private void ConfigureBlazorise(ServiceConfigurationContext context)
+    private void ConfigureAntDesign(ServiceConfigurationContext context)
     {
         context.Services.AddAntDesign();
     }
