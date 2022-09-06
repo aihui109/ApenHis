@@ -51,7 +51,7 @@ public class ApenHisMenuContributor : IMenuContributor
     private Task ConfigureUserMenuAsync(MenuConfigurationContext context)
     {
         var accountStringLocalizer = context.GetLocalizer<AccountResource>();
-
+        var currentUser = context.ServiceProvider.GetRequiredService<ICurrentUser>();
         var identityServerUrl = _configuration["AuthServer:Authority"] ?? "";
 
         context.Menu.AddItem(new ApplicationMenuItem(

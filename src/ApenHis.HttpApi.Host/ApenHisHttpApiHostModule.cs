@@ -94,8 +94,8 @@ public class ApenHisHttpApiHostModule : AbpModule
             options.Applications["MVC"].RootUrl = configuration["App:SelfUrl"];
             options.RedirectAllowedUrls.AddRange(configuration["App:RedirectAllowedUrls"].Split(','));
 
-            options.Applications["Angular"].RootUrl = configuration["App:ClientUrl"];
-            options.Applications["Angular"].Urls[AccountUrlNames.PasswordReset] = "account/reset-password";
+            //options.Applications["Angular"].RootUrl = configuration["App:ClientUrl"];
+            //options.Applications["Angular"].Urls[AccountUrlNames.PasswordReset] = "account/reset-password";
         });
     }
 
@@ -169,9 +169,10 @@ public class ApenHisHttpApiHostModule : AbpModule
     {
         Configure<AbpLocalizationOptions>(options =>
         {
+            options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文"));
+            //options.Languages.Add(new LanguageInfo("en", "en", "English"));
             //options.Languages.Add(new LanguageInfo("ar", "ar", "العربية"));
             //options.Languages.Add(new LanguageInfo("cs", "cs", "Čeština"));
-            options.Languages.Add(new LanguageInfo("en", "en", "English"));
             //options.Languages.Add(new LanguageInfo("en-GB", "en-GB", "English (UK)"));
             //options.Languages.Add(new LanguageInfo("fi", "fi", "Finnish"));
             //options.Languages.Add(new LanguageInfo("fr", "fr", "Français"));
@@ -184,7 +185,6 @@ public class ApenHisHttpApiHostModule : AbpModule
             //options.Languages.Add(new LanguageInfo("ru", "ru", "Русский"));
             //options.Languages.Add(new LanguageInfo("sk", "sk", "Slovak"));
             //options.Languages.Add(new LanguageInfo("tr", "tr", "Türkçe"));
-            options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文"));
             //options.Languages.Add(new LanguageInfo("zh-Hant", "zh-Hant", "繁體中文"));
             //options.Languages.Add(new LanguageInfo("de-DE", "de-DE", "Deutsch", "de"));
             //options.Languages.Add(new LanguageInfo("es", "es", "Español", "es"));

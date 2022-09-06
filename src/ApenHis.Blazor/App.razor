@@ -4,22 +4,31 @@
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                    @if (!context.User.Identity.IsAuthenticated)
+                    @if (context.User.Identity?.IsAuthenticated != true)
                     {
-                        NavigationManager.NavigateTo(
-                        $"authentication/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}");
+                       <RedirectToLogin/>
                     }
                     else
                     {
-                        <p>You are not authorized to access this resource.</p>
+                        <p role="alert">You are not authorized to access this resource.</p>
                     }
                 </NotAuthorized>
             </AuthorizeRouteView>
         </Found>
         <NotFound>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p>Sorry, there's nothing at this address.</p>
-            </LayoutView>
+            <PageTitle>404</PageTitle>
+            <AuthorizeView>
+                <NotAuthorized>
+                    <LayoutView Layout="@typeof(UserLayout)">
+                        <ApenHis.Blazor.Pages.Exception._404/>
+                    </LayoutView>
+                </NotAuthorized>
+                <Authorized>
+                    <LayoutView Layout="@typeof(MainLayout)">
+                        <ApenHis.Blazor.Pages.Exception._404 />
+                    </LayoutView>
+                </Authorized>
+            </AuthorizeView>
         </NotFound>
     </Router>
 </CascadingAuthenticationState>

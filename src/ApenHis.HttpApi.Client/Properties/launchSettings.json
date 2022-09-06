@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ApenHis.HttpApi.Client": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:56830;http://localhost:56834"
+    }
+  }
+}

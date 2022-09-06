@@ -15,6 +15,7 @@ using Volo.Abp.AspNetCore.Components.WebAssembly.BasicTheme;
 using Volo.Abp.Identity.Blazor.WebAssembly;
 using Volo.Abp.SettingManagement.Blazor.WebAssembly;
 using Volo.Abp.TenantManagement.Blazor.WebAssembly;
+using AntDesign.ProLayout;
 
 namespace ApenHis.Blazor;
 
@@ -61,6 +62,8 @@ public class ApenHisBlazorModule : AbpModule
     private void ConfigureAntDesign(ServiceConfigurationContext context)
     {
         context.Services.AddAntDesign();
+        var configuration = context.Services.GetConfiguration();
+        context.Services.Configure<ProSettings>(configuration.GetSection("ProSettings"));
     }
 
     private static void ConfigureAuthentication(WebAssemblyHostBuilder builder)
