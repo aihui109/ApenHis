@@ -31,6 +31,10 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Elsa.Persistence.EntityFramework.Core.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Elsa.Persistence.EntityFramework.SqlServer;
 
 namespace ApenHis;
 
@@ -48,14 +52,6 @@ namespace ApenHis;
 )]
 public class ApenHisHttpApiHostModule : AbpModule
 {
-    public override void PreConfigureServices(ServiceConfigurationContext context)
-    {
-        //PreConfigure<IdentityBuilder>(builder =>
-        //{
-            
-        //});
-    }
-
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         var configuration = context.Services.GetConfiguration();
@@ -66,14 +62,19 @@ public class ApenHisHttpApiHostModule : AbpModule
         ConfigureConventionalControllers();
         ConfigureAuthentication(context, configuration);
         ConfigureLocalization();
-        ConfigureVirtualFileSystem(context);
+        ConfigureVirtualFileSystem(context, hostingEnvironment);
+        ConfigureWorkflow(context,configuration);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
+    }
 
-        Configure<IdentityOptions>(options=>
+    private void ConfigureWorkflow(ServiceConfigurationContext context, IConfiguration configuration)
+    {
+        context.Services.AddElsa(options =>
         {
-            
-        });
+            options.UseEntityFrameworkPersistence(ef => ef.UseSqlServer(configuration.GetConnectionString("Default"), migrationsAssemblyMarker:null))
+                    .AddHttpActivities(configuration.GetSection("Elsa:Http").Bind);
+        }).AddElsaApiEndpoints();
     }
 
     private void ConfigureBundles()
@@ -99,10 +100,8 @@ public class ApenHisHttpApiHostModule : AbpModule
         });
     }
 
-    private void ConfigureVirtualFileSystem(ServiceConfigurationContext context)
-    {
-        var hostingEnvironment = context.Services.GetHostingEnvironment();
-
+    private void ConfigureVirtualFileSystem(ServiceConfigurationContext context,IWebHostEnvironment hostingEnvironment)
+    { 
         if (hostingEnvironment.IsDevelopment())
         {
             Configure<AbpVirtualFileSystemOptions>(options =>
@@ -232,6 +231,7 @@ public class ApenHisHttpApiHostModule : AbpModule
 
         app.UseCorrelationId();
         app.UseStaticFiles();
+        app.UseHttpActivities();
         app.UseRouting();
         app.UseCors();
         app.UseAuthentication();
@@ -259,6 +259,11 @@ public class ApenHisHttpApiHostModule : AbpModule
 
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
-        app.UseConfiguredEndpoints();
+        app.UseConfiguredEndpoints(endpoints =>
+        {
+            // Elsa API Endpoints are implemented as regular ASP.NET Core API controllers.
+            endpoints.MapControllers(); 
+            endpoints.MapFallbackToPage("/_Host");
+        });
     }
 }
