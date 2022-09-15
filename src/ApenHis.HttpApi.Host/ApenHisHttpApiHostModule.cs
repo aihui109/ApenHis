@@ -14,7 +14,6 @@ using ApenHis.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
-using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.Authentication.JwtBearer;
 using Volo.Abp.AspNetCore.MultiTenancy;
@@ -29,12 +28,11 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Elsa.Persistence.EntityFramework.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Elsa.Persistence.EntityFramework.SqlServer;
+using Elsa;
 
 namespace ApenHis;
 
@@ -70,11 +68,17 @@ public class ApenHisHttpApiHostModule : AbpModule
 
     private void ConfigureWorkflow(ServiceConfigurationContext context, IConfiguration configuration)
     {
+        var elsaSection = configuration.GetSection("Elsa");
         context.Services.AddElsa(options =>
         {
-            options.UseEntityFrameworkPersistence(ef => ef.UseSqlServer(configuration.GetConnectionString("Default"), migrationsAssemblyMarker:null))
-                    .AddHttpActivities(configuration.GetSection("Elsa:Http").Bind);
-        }).AddElsaApiEndpoints();
+            options.UseEntityFrameworkPersistence(ef => ef.UseSqlServer(configuration.GetConnectionString("Default"), migrationsAssemblyMarker: null))
+                    .AddConsoleActivities()
+                    .AddHttpActivities(elsaSection.GetSection("Server").Bind)
+                    .AddQuartzTemporalActivities()
+                    .AddJavaScriptActivities()
+                    .AddWorkflowsFrom<ApenHisHttpApiModule>();
+        }).AddElsaApiEndpoints()
+        .AddRazorPages();
     }
 
     private void ConfigureBundles()
