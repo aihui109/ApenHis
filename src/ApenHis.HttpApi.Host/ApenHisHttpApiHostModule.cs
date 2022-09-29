@@ -148,7 +148,6 @@ public class ApenHisHttpApiHostModule : AbpModule
                         HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
                 };
             });
-
         context.Services.ForwardIdentityAuthenticationForBearer();
     }
 
@@ -234,10 +233,9 @@ public class ApenHisHttpApiHostModule : AbpModule
         }
 
         app.UseCorrelationId();
-        app.UseStaticFiles();
-        app.UseHttpActivities();
-        app.UseRouting();
         app.UseCors();
+        app.UseStaticFiles();
+        app.UseRouting();
         app.UseAuthentication();
         app.UseJwtTokenMiddleware();
 
@@ -249,6 +247,7 @@ public class ApenHisHttpApiHostModule : AbpModule
         app.UseUnitOfWork();
         app.UseIdentityServer();
         app.UseAuthorization();
+        app.UseHttpActivities();
 
         app.UseSwagger();
         app.UseAbpSwaggerUI(c =>
@@ -265,9 +264,10 @@ public class ApenHisHttpApiHostModule : AbpModule
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints(endpoints =>
         {
+            endpoints.MapRazorPages();
             // Elsa API Endpoints are implemented as regular ASP.NET Core API controllers.
             endpoints.MapControllers(); 
-            endpoints.MapFallbackToPage("/_Host");
+            endpoints.MapFallbackToPage("/ElsaDashboard");
         });
     }
 }

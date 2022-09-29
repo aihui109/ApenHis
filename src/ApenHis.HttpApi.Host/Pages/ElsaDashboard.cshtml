@@ -1,10 +1,10 @@
-﻿@page "/"
+﻿@page "/Elsa/Dashboard"
 @{
     Layout = null;
     var serverUrl = $"{Request.Scheme}://{Request.Host}";
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,8 +17,31 @@
     <script type="module" src="/_content/Elsa.Designer.Components.Web/elsa-workflows-studio/elsa-workflows-studio.esm.js"></script>
 </head>
 <body>
-    <elsa-studio-root server-url="@serverUrl" monaco-lib-path="_content/Elsa.Designer.Components.Web/monaco-editor/min">
+    <elsa-studio-root server-url="@serverUrl" monaco-lib-path="_content/Elsa.Designer.Components.Web/monaco-editor/min" base-path="/elsa/dashboard" culture="zh-CN">
         <elsa-studio-dashboard></elsa-studio-dashboard>
     </elsa-studio-root>
+    <script>
+        //const elsaStudioRoot = document.querySelector('elsa-studio-root');
+
+        //elsaStudioRoot.addEventListener('initializing', e => {
+        //    const elsaStudio = e.detail;
+        //    elsaStudio.pluginManager.registerPlugin(AuthorizationMiddlewarePlugin);
+        //});
+
+        //function AuthorizationMiddlewarePlugin(elsaStudio) {
+        //    const eventBus = elsaStudio.eventBus;
+
+        //    eventBus.on('http-client-created', e => {
+        //        // Register Axios middleware.
+        //        e.service.register({
+        //            onRequest(request) {
+        //                delete request.xsrfCookieName;
+        //                delete request.xsrfHeaderName;
+        //                return request;
+        //            }
+        //        });
+        //    });
+        //}
+    </script>
 </body>
 </html>
