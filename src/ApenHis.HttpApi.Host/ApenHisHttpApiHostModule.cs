@@ -267,7 +267,7 @@ public class ApenHisHttpApiHostModule : AbpModule
             endpoints.MapRazorPages();
             // Elsa API Endpoints are implemented as regular ASP.NET Core API controllers.
             endpoints.MapControllers(); 
-            //endpoints.MapFallbackToPage("/ElsaDashboard");
+            endpoints.MapFallbackToPage("/ElsaDashboard");
         });
     }
 }
