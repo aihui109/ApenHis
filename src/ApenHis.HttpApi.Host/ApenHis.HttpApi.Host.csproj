@@ -10,22 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elsa" Version="2.9.0" />
-    <PackageReference Include="Elsa.Activities.Http" Version="2.9.0" />
-    <PackageReference Include="Elsa.Activities.Temporal.Quartz" Version="2.9.0" />
-    <PackageReference Include="Elsa.Designer.Components.Web" Version="2.9.0" />
-    <PackageReference Include="Elsa.Persistence.EntityFramework.SqlServer" Version="2.9.0" />
-    <PackageReference Include="Elsa.Server.Api" Version="2.9.0" />
+    <PackageReference Include="Elsa" Version="2.9.2" />
+    <PackageReference Include="Elsa.Activities.Http" Version="2.9.2" />
+    <PackageReference Include="Elsa.Activities.Temporal.Quartz" Version="2.9.2" />
+    <PackageReference Include="Elsa.Designer.Components.Web" Version="2.9.2" />
+    <PackageReference Include="Elsa.Persistence.EntityFramework.SqlServer" Version="2.9.2" />
+    <PackageReference Include="Elsa.Server.Api" Version="2.9.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
-    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
-    <PackageReference Include="Volo.Abp.AspNetCore.MultiTenancy" Version="6.0.0" />
-    <PackageReference Include="Volo.Abp.Autofac" Version="6.0.0" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="6.0.0" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.0" />
-    <PackageReference Include="Volo.Abp.Swashbuckle" Version="6.0.0" />
-    <PackageReference Include="Volo.Abp.Account.Web.IdentityServer" Version="6.0.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.MultiTenancy" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.Account.Web.IdentityServer" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>
