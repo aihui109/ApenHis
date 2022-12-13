@@ -56,6 +56,14 @@ public class ApenHisEntityFrameworkCoreTestModule : AbpModule
             context.GetService<IRelationalDatabaseCreator>().CreateTables();
         }
 
+        var optionsForOracleDb = new DbContextOptionsBuilder<ApenHisOracleDbContext>()
+        .UseSqlite(connection)
+        .Options;
+
+        using (var context = new ApenHisOracleDbContext(optionsForOracleDb))
+        {
+            context.GetService<IRelationalDatabaseCreator>().CreateTables();
+        }
         return connection;
     }
 }

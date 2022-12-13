@@ -17,13 +17,9 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
 namespace ApenHis.EntityFrameworkCore;
 
-[ReplaceDbContext(typeof(IIdentityDbContext))]
-[ReplaceDbContext(typeof(ITenantManagementDbContext))]
-[ConnectionStringName("Default")]
-public class ApenHisDbContext :
-    AbpDbContext<ApenHisDbContext>,
-    IIdentityDbContext,
-    ITenantManagementDbContext
+[ConnectionStringName("OracleConn")]
+public class ApenHisOracleDbContext :
+    AbpDbContext<ApenHisOracleDbContext>
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
@@ -40,24 +36,11 @@ public class ApenHisDbContext :
      * uses this DbContext on runtime. Otherwise, it will use its own DbContext class.
      */
 
-    //Identity
-    public DbSet<IdentityUser> Users { get; set; }
-    public DbSet<IdentityRole> Roles { get; set; }
-    public DbSet<IdentityClaimType> ClaimTypes { get; set; }
-    public DbSet<OrganizationUnit> OrganizationUnits { get; set; }
-    public DbSet<IdentitySecurityLog> SecurityLogs { get; set; }
-    public DbSet<IdentityLinkUser> LinkUsers { get; set; }
-
-    // Tenant Management
-    public DbSet<Tenant> Tenants { get; set; }
-    public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
-
-    public DbSet<Feature> Features { get; set; }
-    public DbSet<RoleFeature> RoleFeatures { get; set; }
+   
 
     #endregion
 
-    public ApenHisDbContext(DbContextOptions<ApenHisDbContext> options)
+    public ApenHisOracleDbContext(DbContextOptions<ApenHisOracleDbContext> options)
         : base(options)
     {
 
@@ -69,19 +52,6 @@ public class ApenHisDbContext :
 
         /* Include modules to your migration db context */
 
-        builder.ConfigurePermissionManagement();
-        builder.ConfigureSettingManagement();
-        builder.ConfigureBackgroundJobs();
-        builder.ConfigureAuditLogging();
-        builder.ConfigureIdentity();
-        builder.ConfigureIdentityServer();
-        builder.ConfigureFeatureManagement();
-        builder.ConfigureTenantManagement();
-
-        /* Configure your own tables/entities inside here */
-        //注入所属文件的所有ef配置文件，多数据库下可能会串
-        //builder.ApplyConfigurationsFromAssembly(typeof(ApenHisDbContext).Assembly);
-
         //builder.Entity<YourEntity>(b =>
         //{
         //    b.ToTable(ApenHisConsts.DbTablePrefix + "YourEntities", ApenHisConsts.DbSchema);
@@ -89,6 +59,5 @@ public class ApenHisDbContext :
         //    //...
         //});
 
-        builder.ApplyConfiguration(new FeatureCfg());
     }
 }

@@ -30,5 +30,10 @@ public class EntityFrameworkCoreApenHisDbSchemaMigrator
             .GetRequiredService<ApenHisDbContext>()
             .Database
             .MigrateAsync();
+
+        //await _serviceProvider
+        //   .GetRequiredService<ApenHisOracleDbContext>()
+        //   .Database
+        //   .MigrateAsync();
     }
 }
