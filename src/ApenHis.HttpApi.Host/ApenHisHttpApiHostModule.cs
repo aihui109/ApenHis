@@ -33,6 +33,7 @@ using Elsa.Persistence.EntityFramework.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Elsa.Persistence.EntityFramework.SqlServer;
 using Elsa;
+using OpenIddict.Validation.AspNetCore;
 
 namespace ApenHis;
 
@@ -44,12 +45,25 @@ namespace ApenHis;
     typeof(ApenHisEntityFrameworkCoreModule),
     typeof(AbpAspNetCoreMvcUiBasicThemeModule),
     typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
-    typeof(AbpAccountWebIdentityServerModule),
+    typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
 )]
 public class ApenHisHttpApiHostModule : AbpModule
 {
+    public override void PreConfigureServices(ServiceConfigurationContext context)
+    {
+        PreConfigure<OpenIddictBuilder>(builder =>
+        {
+            builder.AddValidation(options =>
+            {
+                options.AddAudiences("ApenHis");
+                options.UseLocalServer();
+                options.UseAspNetCore();
+            });
+        });
+    }
+
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         var configuration = context.Services.GetConfiguration();
@@ -58,7 +72,7 @@ public class ApenHisHttpApiHostModule : AbpModule
         ConfigureBundles();
         ConfigureUrls(configuration);
         ConfigureConventionalControllers();
-        ConfigureAuthentication(context, configuration);
+        ConfigureAuthentication(context);
         ConfigureLocalization();
         ConfigureVirtualFileSystem(context, hostingEnvironment);
         ConfigureWorkflow(context,configuration);
@@ -134,22 +148,11 @@ public class ApenHisHttpApiHostModule : AbpModule
         });
     }
 
-    private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
+    private void ConfigureAuthentication(ServiceConfigurationContext context)
     {
-        context.Services.AddAuthentication()
-            .AddJwtBearer(options =>
-            {
-                options.Authority = configuration["AuthServer:Authority"];
-                options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
-                options.Audience = "ApenHis";
-                options.BackchannelHttpHandler = new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback =
-                        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                };
-            });
-        context.Services.ForwardIdentityAuthenticationForBearer();
+        context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
     }
+
 
     private static void ConfigureSwaggerServices(ServiceConfigurationContext context, IConfiguration configuration)
     {
@@ -237,7 +240,7 @@ public class ApenHisHttpApiHostModule : AbpModule
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthentication();
-        app.UseJwtTokenMiddleware();
+        app.UseAbpOpenIddictValidation();
 
         if (MultiTenancyConsts.IsEnabled)
         {
@@ -245,7 +248,6 @@ public class ApenHisHttpApiHostModule : AbpModule
         }
 
         app.UseUnitOfWork();
-        app.UseIdentityServer();
         app.UseAuthorization();
         app.UseHttpActivities();
 
@@ -256,7 +258,6 @@ public class ApenHisHttpApiHostModule : AbpModule
 
             var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
             c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
-            c.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
             c.OAuthScopes("ApenHis");
         });
 
