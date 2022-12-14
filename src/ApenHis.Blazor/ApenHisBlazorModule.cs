@@ -73,7 +73,7 @@ public class ApenHisBlazorModule : AbpModule
             builder.Configuration.Bind("AuthServer", options.ProviderOptions);
             options.UserOptions.RoleClaim = JwtClaimTypes.Role;
             options.ProviderOptions.DefaultScopes.Add("ApenHis");
-            options.ProviderOptions.DefaultScopes.Add("role");
+            options.ProviderOptions.DefaultScopes.Add("roles");
             options.ProviderOptions.DefaultScopes.Add("email");
             options.ProviderOptions.DefaultScopes.Add("phone");
         });
