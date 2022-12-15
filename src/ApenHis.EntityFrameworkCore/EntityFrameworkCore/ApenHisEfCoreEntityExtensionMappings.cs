@@ -40,23 +40,23 @@ public static class ApenHisEfCoreEntityExtensionMappings
              * See the documentation for more:
              * https://docs.abp.io/en/abp/latest/Customizing-Application-Modules-Extending-Entities
              */
-            //ObjectExtensionManager.Instance
-            //        .MapEfCoreProperty<IdentityUser, string>(nameof(Operator.InputCode),
-            //             (entityBuilder, propertyBuilder) =>
-            //             {
-            //                 propertyBuilder.HasColumnType("nvarchar").HasMaxLength(50).HasComment("输入码");
-            //             })
-            //        //.MapEfCoreProperty<IdentityUser, Guid?>(nameof(Operator.DepartmentId))
-            //        //.MapEfCoreProperty<IdentityUser, DateTime?>(nameof(Operator.CreateTime))
-            //        //.MapEfCoreProperty<IdentityUser, DateTime?>(nameof(Operator.UpdateTime))
-            //        //.MapEfCoreProperty<IdentityUser, byte[]>(nameof(Operator.TimeStamp))
-            //        //.MapEfCoreProperty<IdentityUser, string>(nameof(Operator.IDCard))
-            //        //.MapEfCoreProperty<IdentityUser, string>(nameof(Operator.Sex))
-            //        //.MapEfCoreProperty<IdentityUser, DateTime?>(nameof(Operator.Birthday))
-            //        //.MapEfCoreProperty<IdentityUser, string>(nameof(Operator.Nation))
-            //        //.MapEfCoreProperty<IdentityUser, string>(nameof(Operator.Title))
-            //        //.MapEfCoreProperty<IdentityUser, bool>(nameof(Operator.IsAdmin))
-            //        ;
+            ObjectExtensionManager.Instance
+                    .MapEfCoreProperty<IdentityUser, string>(nameof(Operator.InputCode),
+                         (entityBuilder, propertyBuilder) =>
+                         {
+                             propertyBuilder.HasColumnType("nvarchar").HasMaxLength(50).HasComment("输入码");
+                         })
+                    //.MapEfCoreProperty<IdentityUser, Guid?>(nameof(Operator.DepartmentId))
+                    //.MapEfCoreProperty<IdentityUser, DateTime?>(nameof(Operator.CreateTime))
+                    //.MapEfCoreProperty<IdentityUser, DateTime?>(nameof(Operator.UpdateTime))
+                    //.MapEfCoreProperty<IdentityUser, byte[]>(nameof(Operator.TimeStamp))
+                    //.MapEfCoreProperty<IdentityUser, string>(nameof(Operator.IDCard))
+                    //.MapEfCoreProperty<IdentityUser, string>(nameof(Operator.Sex))
+                    //.MapEfCoreProperty<IdentityUser, DateTime?>(nameof(Operator.Birthday))
+                    //.MapEfCoreProperty<IdentityUser, string>(nameof(Operator.Nation))
+                    //.MapEfCoreProperty<IdentityUser, string>(nameof(Operator.Title))
+                    //.MapEfCoreProperty<IdentityUser, bool>(nameof(Operator.IsAdmin))
+                    ;
         });
     }
 }
