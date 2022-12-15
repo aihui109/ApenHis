@@ -59,6 +59,8 @@ public static class ApenHisModuleExtensionConfigurator
                               property.Attributes.Add(new RequiredAttribute());
                               property.Attributes.Add(new StringLengthAttribute(64) {MinimumLength = 4});
 
+                              property.Configuration[IdentityModuleExtensionConsts.ConfigurationNames.AllowUserToEdit] = true;
+
                               //...other configurations for this property
                           }
                       );
@@ -69,20 +71,20 @@ public static class ApenHisModuleExtensionConfigurator
          * https://docs.abp.io/en/abp/latest/Module-Entity-Extensions
          */
 
-        ObjectExtensionManager.Instance.Modules()
-              .ConfigureIdentity(identity =>
-              {
-                  identity.ConfigureUser(user =>
-                  {
-                      user.AddOrUpdateProperty<string>( 
-                          nameof(Operator.InputCode), 
-                          property =>
-                          {
-                              property.Attributes.Add(new RequiredAttribute() {  AllowEmptyStrings=false,ErrorMessage= "拼音码不能为空" });
-                              property.Attributes.Add(new StringLengthAttribute(50) { ErrorMessage= "拼音码长度不能超过50个字符" });
-                          }
-                      );
-                  });
-              });
+        //ObjectExtensionManager.Instance.Modules()
+        //      .ConfigureIdentity(identity =>
+        //      {
+        //          identity.ConfigureUser(user =>
+        //          {
+        //              user.AddOrUpdateProperty<string>( 
+        //                  nameof(Operator.InputCode), 
+        //                  property =>
+        //                  {
+        //                      property.Attributes.Add(new RequiredAttribute() {  AllowEmptyStrings=false,ErrorMessage= "拼音码不能为空" });
+        //                      property.Attributes.Add(new StringLengthAttribute(50) { ErrorMessage= "拼音码长度不能超过50个字符" });
+        //                  }
+        //              );
+        //          });
+        //      });
     }
 }
