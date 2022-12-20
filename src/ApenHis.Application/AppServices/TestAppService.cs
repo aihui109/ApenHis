@@ -1,13 +1,13 @@
-﻿using ApenHis.Dtos;
+﻿using ApenHis.AppIServices;
+using ApenHis.Dtos;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ApenHis.Controllers
+namespace ApenHis.AppServices
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController, Authorize]
-    public class TestController : ApenHisController
+    [Authorize]
+    public class TestAppService : ApenHisAppService, ITestAppService 
     {
         [HttpPost]
         public async Task<TestDto> GetTestDto(TestInput input)

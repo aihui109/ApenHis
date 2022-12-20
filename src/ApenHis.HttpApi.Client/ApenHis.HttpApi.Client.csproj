@@ -22,7 +22,10 @@
 
   <ItemGroup>
     <EmbeddedResource Include="**\*generate-proxy.json" />
+    <Compile Remove="ClientProxies\**" />
     <Content Remove="**\*generate-proxy.json" />
+    <EmbeddedResource Remove="ClientProxies\**" />
+    <None Remove="ClientProxies\**" />
   </ItemGroup>
 
 </Project>

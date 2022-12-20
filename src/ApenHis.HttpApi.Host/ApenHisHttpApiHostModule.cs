@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
@@ -15,7 +14,6 @@ using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.Account.Web;
-using Volo.Abp.AspNetCore.Authentication.JwtBearer;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
@@ -34,6 +32,14 @@ using Microsoft.EntityFrameworkCore;
 using Elsa.Persistence.EntityFramework.SqlServer;
 using Elsa;
 using OpenIddict.Validation.AspNetCore;
+using Elsa.Options;
+using Elsa.Server.Api;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Volo.Abp.AspNetCore.Mvc.AntiForgery;
+using Volo.Abp.Json;
 
 namespace ApenHis;
 
@@ -44,7 +50,6 @@ namespace ApenHis;
     typeof(ApenHisApplicationModule),
     typeof(ApenHisEntityFrameworkCoreModule),
     typeof(AbpAspNetCoreMvcUiBasicThemeModule),
-    typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
@@ -67,32 +72,48 @@ public class ApenHisHttpApiHostModule : AbpModule
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         var configuration = context.Services.GetConfiguration();
-        var hostingEnvironment = context.Services.GetHostingEnvironment();
 
+        ConfigureAuthentication(context);
         ConfigureBundles();
         ConfigureUrls(configuration);
         ConfigureConventionalControllers();
-        ConfigureAuthentication(context);
         ConfigureLocalization();
-        ConfigureVirtualFileSystem(context, hostingEnvironment);
-        ConfigureWorkflow(context,configuration);
+        ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
+        ConfigureElsa(context, configuration);
+
+        PreConfigure<AbpJsonOptions>(options => { options.UseHybridSerializer = false; });
+        Configure<AbpAntiForgeryOptions>(options => { options.AutoValidateFilter = type => type.Assembly != typeof(Elsa.Server.Api.Endpoints.WorkflowRegistry.Get).Assembly; });
     }
 
-    private void ConfigureWorkflow(ServiceConfigurationContext context, IConfiguration configuration)
+    private void ConfigureElsa(ServiceConfigurationContext context, IConfiguration configuration)
     {
         var elsaSection = configuration.GetSection("Elsa");
         context.Services.AddElsa(options =>
         {
             options.UseEntityFrameworkPersistence(ef => ef.UseSqlServer(configuration.GetConnectionString("Default"), migrationsAssemblyMarker: null))
-                    .AddConsoleActivities()
                     .AddHttpActivities(elsaSection.GetSection("Server").Bind)
                     .AddQuartzTemporalActivities()
                     .AddJavaScriptActivities()
-                    .AddWorkflowsFrom<ApenHisHttpApiModule>();
-        }).AddElsaApiEndpoints()
+                    .AddWorkflowsFrom<ApenHisHttpApiModule>()
+                    .AddActivitiesFrom<ApenHisHttpApiModule>();
+        });
+        // Elsa API endpoints.
+        context.Services
+        //.AddWorkflowContextProvider() //use this when using custom context provide
+        .AddElsaApiEndpoints()
         .AddRazorPages();
+        context.Services.Configure<ApiVersioningOptions>(options => { options.UseApiBehavior = false; });
+        context.Services.AddCors(cors =>
+        {
+            cors
+            .AddDefaultPolicy(policy => policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin()
+            .WithExposedHeaders("Content-Disposition"));
+        });
     }
 
     private void ConfigureBundles()
@@ -118,8 +139,10 @@ public class ApenHisHttpApiHostModule : AbpModule
         });
     }
 
-    private void ConfigureVirtualFileSystem(ServiceConfigurationContext context,IWebHostEnvironment hostingEnvironment)
-    { 
+    private void ConfigureVirtualFileSystem(ServiceConfigurationContext context)
+    {
+        var hostingEnvironment = context.Services.GetHostingEnvironment();
+
         if (hostingEnvironment.IsDevelopment())
         {
             Configure<AbpVirtualFileSystemOptions>(options =>
@@ -167,6 +190,8 @@ public class ApenHisHttpApiHostModule : AbpModule
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "ApenHis API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
+
+                options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
     }
 
@@ -236,9 +261,9 @@ public class ApenHisHttpApiHostModule : AbpModule
         }
 
         app.UseCorrelationId();
-        app.UseCors();
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseCors();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
 
@@ -249,7 +274,6 @@ public class ApenHisHttpApiHostModule : AbpModule
 
         app.UseUnitOfWork();
         app.UseAuthorization();
-        app.UseHttpActivities();
 
         app.UseSwagger();
         app.UseAbpSwaggerUI(c =>
@@ -263,11 +287,12 @@ public class ApenHisHttpApiHostModule : AbpModule
 
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
+        app.UseHttpActivities();
         app.UseConfiguredEndpoints(endpoints =>
         {
             endpoints.MapRazorPages();
             // Elsa API Endpoints are implemented as regular ASP.NET Core API controllers.
-            endpoints.MapControllers(); 
+            endpoints.MapControllers();
             endpoints.MapFallbackToPage("/ElsaDashboard");
         });
     }

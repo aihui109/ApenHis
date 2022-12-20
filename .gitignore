@@ -254,7 +254,7 @@ paket-files/
 # ApenHis
 src/ApenHis.Web/Logs/*
 src/ApenHis.Web.Host/Logs/*
-src/ApenHis.IdentityServer/Logs/*
+src/ApenHis.AuthServer/Logs/*
 src/ApenHis.HttpApi.Host/Logs/*
 src/ApenHis.HttpApi.Host/Logs/*
 src/ApenHis.DbMigrator/Logs/*
