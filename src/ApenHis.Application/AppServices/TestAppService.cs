@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApenHis.AppServices
 {
-    [Authorize]
-    public class TestAppService : ApenHisAppService, ITestAppService 
+    [Authorize,Route("api/[controller]/[action]")]
+    public class TestAppService : ApenHisAppService, ITestAppService
     {
         [HttpPost]
         public async Task<TestDto> GetTestDto(TestInput input)

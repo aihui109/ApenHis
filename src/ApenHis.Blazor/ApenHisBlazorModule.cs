@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Net.Http;
-using IdentityModel;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ApenHis.Blazor.Menus;
-using Volo.Abp.AspNetCore.Components.Web.BasicTheme.Themes.Basic;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
 using Volo.Abp.Autofac.WebAssembly;
 using Volo.Abp.AutoMapper;
@@ -16,6 +14,7 @@ using Volo.Abp.Identity.Blazor.WebAssembly;
 using Volo.Abp.SettingManagement.Blazor.WebAssembly;
 using Volo.Abp.TenantManagement.Blazor.WebAssembly;
 using AntDesign.ProLayout;
+using OpenIddict.Abstractions;
 
 namespace ApenHis.Blazor;
 
@@ -71,7 +70,8 @@ public class ApenHisBlazorModule : AbpModule
         builder.Services.AddOidcAuthentication(options =>
         {
             builder.Configuration.Bind("AuthServer", options.ProviderOptions);
-            options.UserOptions.RoleClaim = JwtClaimTypes.Role;
+            options.UserOptions.NameClaim = OpenIddictConstants.Claims.Name;
+            options.UserOptions.RoleClaim = OpenIddictConstants.Claims.Role;
             options.ProviderOptions.DefaultScopes.Add("ApenHis");
             options.ProviderOptions.DefaultScopes.Add("roles");
             options.ProviderOptions.DefaultScopes.Add("email");

@@ -40,6 +40,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.Json;
+using Volo.Abp.AspNetCore.Mvc.Conventions;
 
 namespace ApenHis;
 
@@ -71,6 +72,10 @@ public class ApenHisHttpApiHostModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        //We can disable this setting in production to avoid any potential security risks.
+#if DEBUG
+        Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+#endif
         var configuration = context.Services.GetConfiguration();
 
         ConfigureAuthentication(context);
