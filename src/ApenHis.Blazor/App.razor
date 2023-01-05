@@ -2,7 +2,7 @@
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
-            <AuthorizeReuseTabsRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
                     @if (context.User.Identity?.IsAuthenticated != true)
                     {
@@ -13,14 +13,11 @@
                         <p role="alert">You are not authorized to access this resource.</p>
                     }
                 </NotAuthorized>
-            </AuthorizeReuseTabsRouteView>
+            </AuthorizeRouteView>
         </Found>
         <NotFound>
             <PageTitle>404</PageTitle>
-            <LayoutView Layout="@typeof(UserLayout)">
-                <ApenHis.Blazor.Pages.Exception._404 />
-            </LayoutView>
-            @*<AuthorizeView>
+            <AuthorizeView>
                 <NotAuthorized>
                     <LayoutView Layout="@typeof(UserLayout)">
                         <ApenHis.Blazor.Pages.Exception._404/>
@@ -31,7 +28,7 @@
                         <ApenHis.Blazor.Pages.Exception._404 />
                     </LayoutView>
                 </Authorized>
-            </AuthorizeView>*@
+            </AuthorizeView>
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
