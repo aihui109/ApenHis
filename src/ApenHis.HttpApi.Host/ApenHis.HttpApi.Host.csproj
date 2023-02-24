@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>ApenHis</RootNamespace>
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
     <UserSecretsId>ApenHis-4681b4fd-151f-4221-84a4-929d86723e4c</UserSecretsId>
@@ -16,15 +16,15 @@
     <PackageReference Include="Elsa.Designer.Components.Web" Version="2.10.2.2" />
     <PackageReference Include="Elsa.Persistence.EntityFramework.SqlServer" Version="2.10.2.2" />
     <PackageReference Include="Elsa.Server.Api" Version="2.10.2.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
-    <PackageReference Include="Volo.Abp.Account.Web.OpenIddict" Version="6.0.2" />
-    <PackageReference Include="Volo.Abp.AspNetCore.MultiTenancy" Version="6.0.2" />
-    <PackageReference Include="Volo.Abp.Autofac" Version="6.0.2" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="6.0.2" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.2" />
-    <PackageReference Include="Volo.Abp.Swashbuckle" Version="6.0.2" />
+    <PackageReference Include="Volo.Abp.Account.Web.OpenIddict" Version="7.0.2" />
+    <PackageReference Include="Volo.Abp.AspNetCore.MultiTenancy" Version="7.0.2" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="7.0.2" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="7.0.2" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="7.0.2" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" Version="7.0.2" />
   </ItemGroup>
 
   <ItemGroup>
