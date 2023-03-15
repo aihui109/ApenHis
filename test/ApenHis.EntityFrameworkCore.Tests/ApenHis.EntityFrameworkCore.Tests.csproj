@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\ApenHis.EntityFrameworkCore\ApenHis.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\ApenHis.TestBase\ApenHis.TestBase.csproj" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="7.0.2" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>

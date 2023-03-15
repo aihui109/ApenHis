@@ -21,7 +21,6 @@ using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
-using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
@@ -32,15 +31,16 @@ using Microsoft.EntityFrameworkCore;
 using Elsa.Persistence.EntityFramework.SqlServer;
 using Elsa;
 using OpenIddict.Validation.AspNetCore;
-using Elsa.Options;
-using Elsa.Server.Api;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Volo.Abp.AspNetCore.Mvc.AntiForgery;
-using Volo.Abp.Json;
-using Volo.Abp.AspNetCore.Mvc.Conventions;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
+using Volo.Abp.Identity;
+using Microsoft.Net.Http.Headers;
 
 namespace ApenHis;
 
@@ -85,6 +85,7 @@ public class ApenHisHttpApiHostModule : AbpModule
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
+        ConfigureOdata(context);
         ConfigureElsa(context, configuration);
 
         //PreConfigure<AbpJsonOptions>(options => { options.UseHybridSerializer = false; });
@@ -221,6 +222,43 @@ public class ApenHisHttpApiHostModule : AbpModule
         });
     }
 
+    private void ConfigureOdata(ServiceConfigurationContext context)
+    {
+        context.Services.AddControllers().AddOData(opt => opt.AddRouteComponents("odata", GetEdmModel()));
+        context.Services.AddAssemblyOf<MetadataController>();
+
+        Configure<MvcOptions>(options =>
+        {
+            foreach (var outputFormatter in options.OutputFormatters.OfType<OutputFormatter>().Where(x => x.SupportedMediaTypes.Count == 0))
+            {
+                outputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
+            }
+
+            foreach (var inputFormatter in options.InputFormatters.OfType<InputFormatter>().Where(x => x.SupportedMediaTypes.Count == 0))
+            {
+                inputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
+            }
+        });
+    }
+
+    private IEdmModel GetEdmModel()
+    {
+        var modelBuilder = new ODataConventionModelBuilder();
+        var appUser = modelBuilder.EntitySet<IdentityUser>("Users").EntityType;
+
+        appUser.HasKey(u => u.Id);
+        appUser.Property(x => x.UserName);
+        appUser.Property(x => x.TenantId);
+        appUser.Property(x => x.Name);
+        appUser.Property(x => x.Surname);
+        appUser.Property(x => x.Email);
+        appUser.Property(x => x.EmailConfirmed);
+        appUser.Property(x => x.PhoneNumber);
+        appUser.Property(x => x.PhoneNumberConfirmed);
+
+        return modelBuilder.GetEdmModel();
+    }
+
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
         var app = context.GetApplicationBuilder();
@@ -271,7 +309,7 @@ public class ApenHisHttpApiHostModule : AbpModule
             endpoints.MapRazorPages();
             // Elsa API Endpoints are implemented as regular ASP.NET Core API controllers.
             endpoints.MapControllers();
-            endpoints.MapFallbackToPage("/ElsaDashboard");
+            //endpoints.MapFallbackToPage("/ElsaDashboard");
         });
     }
 }
