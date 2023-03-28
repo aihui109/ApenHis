@@ -13,16 +13,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elsa" Version="2.10.2.2" />
-    <PackageReference Include="Elsa.Activities.Http" Version="2.10.2.2" />
-    <PackageReference Include="Elsa.Server.Api" Version="2.10.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.12" />
-    <PackageReference Include="Volo.Abp.Account.HttpApi" Version="7.0.3" />
-    <PackageReference Include="Volo.Abp.Identity.HttpApi" Version="7.0.3" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi" Version="7.0.3" />
-    <PackageReference Include="Volo.Abp.TenantManagement.HttpApi" Version="7.0.3" />
-    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi" Version="7.0.3" />
-    <PackageReference Include="Volo.Abp.SettingManagement.HttpApi" Version="7.0.3" />
+    <PackageReference Include="Elsa" Version="2.11.0" />
+    <PackageReference Include="Elsa.Activities.Http" Version="2.11.0" />
+    <PackageReference Include="Elsa.Server.Api" Version="2.11.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.1.0" />
+    <PackageReference Include="Volo.Abp.Account.HttpApi" Version="7.1.0" />
+    <PackageReference Include="Volo.Abp.Identity.HttpApi" Version="7.1.0" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi" Version="7.1.0" />
+    <PackageReference Include="Volo.Abp.TenantManagement.HttpApi" Version="7.1.0" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi" Version="7.1.0" />
+    <PackageReference Include="Volo.Abp.SettingManagement.HttpApi" Version="7.1.0" />
   </ItemGroup>
 
 </Project>
