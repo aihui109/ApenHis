@@ -10,14 +10,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ApenHis.EntityFrameworkCore;
 using ApenHis.MultiTenancy;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
@@ -41,6 +39,8 @@ using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Volo.Abp.Identity;
 using Microsoft.Net.Http.Headers;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
 
 namespace ApenHis;
 
@@ -50,7 +50,7 @@ namespace ApenHis;
     typeof(AbpAspNetCoreMultiTenancyModule),
     typeof(ApenHisApplicationModule),
     typeof(ApenHisEntityFrameworkCoreModule),
-    typeof(AbpAspNetCoreMvcUiBasicThemeModule),
+    typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
@@ -126,7 +126,7 @@ public class ApenHisHttpApiHostModule : AbpModule
         Configure<AbpBundlingOptions>(options =>
         {
             options.StyleBundles.Configure(
-                BasicThemeBundles.Styles.Global,
+                LeptonXLiteThemeBundles.Styles.Global,
                 bundle => { bundle.AddFiles("/global-styles.css"); }
             );
         });
