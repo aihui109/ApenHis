@@ -210,6 +210,7 @@ public class ApenHisHttpApiHostModule : AbpModule
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
+                    //elsa header
                     .WithExposedHeaders("Content-Disposition");
             });
         });
