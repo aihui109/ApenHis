@@ -35,7 +35,6 @@ public class ApenHisDomainModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        //PreConfigure<AbpJsonOptions>(options => { options.UseHybridSerializer = false; });
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文"));

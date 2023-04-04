@@ -87,9 +87,6 @@ public class ApenHisHttpApiHostModule : AbpModule
         ConfigureSwaggerServices(context, configuration);
         ConfigureOdata(context);
         ConfigureElsa(context, configuration);
-
-        //PreConfigure<AbpJsonOptions>(options => { options.UseHybridSerializer = false; });
-        Configure<AbpAntiForgeryOptions>(options => { options.AutoValidateFilter = type => type.Assembly != typeof(Elsa.Server.Api.Endpoints.WorkflowRegistry.Get).Assembly; });
     }
 
     private void ConfigureElsa(ServiceConfigurationContext context, IConfiguration configuration)
@@ -105,19 +102,14 @@ public class ApenHisHttpApiHostModule : AbpModule
                     .AddActivitiesFrom<ApenHisHttpApiModule>();
         });
         // Elsa API endpoints.
-        context.Services
-        //.AddWorkflowContextProvider() //use this when using custom context provide
-        .AddElsaApiEndpoints()
-        .AddRazorPages();
+        context.Services.AddElsaApiEndpoints();
         context.Services.Configure<ApiVersioningOptions>(options => { options.UseApiBehavior = false; });
-        context.Services.AddCors(cors =>
+
+        //Disable antiforgery validation for elsa
+        Configure<AbpAntiForgeryOptions>(options =>
         {
-            cors
-            .AddDefaultPolicy(policy => policy
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowAnyOrigin()
-            .WithExposedHeaders("Content-Disposition"));
+            options.AutoValidateFilter = type =>
+                type.Assembly != typeof(Elsa.Server.Api.Endpoints.WorkflowRegistry.Get).Assembly;
         });
     }
 
@@ -217,7 +209,8 @@ public class ApenHisHttpApiHostModule : AbpModule
                     .SetIsOriginAllowedToAllowWildcardSubdomains()
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowCredentials();
+                    .AllowCredentials()
+                    .WithExposedHeaders("Content-Disposition");
             });
         });
     }
