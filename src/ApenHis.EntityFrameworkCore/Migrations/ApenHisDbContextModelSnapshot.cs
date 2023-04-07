@@ -93,7 +93,7 @@ namespace ApenHis.Migrations
                         .IsUnique()
                         .HasFilter("[TenantId] IS NOT NULL AND [Title] IS NOT NULL");
 
-                    b.ToTable("Features");
+                    b.ToTable("Features", (string)null);
                 });
 
             modelBuilder.Entity("ApenHis.Entities.RoleFeature", b =>
@@ -115,7 +115,7 @@ namespace ApenHis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleFeatures");
+                    b.ToTable("RoleFeatures", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
