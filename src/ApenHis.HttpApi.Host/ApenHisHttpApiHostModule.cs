@@ -218,7 +218,7 @@ public class ApenHisHttpApiHostModule : AbpModule
 
     private void ConfigureOdata(ServiceConfigurationContext context)
     {
-        context.Services.AddControllers().AddOData(opt => opt.AddRouteComponents("odata", GetEdmModel()));
+        context.Services.AddControllers().AddOData(opt => opt.EnableQueryFeatures(100).AddRouteComponents("odata", GetEdmModel()));
         context.Services.AddAssemblyOf<MetadataController>();
 
         Configure<MvcOptions>(options =>
@@ -238,7 +238,7 @@ public class ApenHisHttpApiHostModule : AbpModule
     private IEdmModel GetEdmModel()
     {
         var modelBuilder = new ODataConventionModelBuilder();
-        var appUser = modelBuilder.EntitySet<IdentityUser>("Users").EntityType;
+        var appUser = modelBuilder.EntitySet<IdentityUser>("users").EntityType;
 
         appUser.HasKey(u => u.Id);
         appUser.Property(x => x.UserName);
@@ -272,6 +272,10 @@ public class ApenHisHttpApiHostModule : AbpModule
 
         app.UseCorrelationId();
         app.UseStaticFiles();
+        if (env.IsDevelopment())
+        {
+            app.UseODataRouteDebug();
+        }
         app.UseRouting();
         app.UseCors();
         app.UseAuthentication();
