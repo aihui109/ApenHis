@@ -41,6 +41,7 @@ using Volo.Abp.Identity;
 using Microsoft.Net.Http.Headers;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
+using Volo.Abp.AutoMapper;
 
 namespace ApenHis;
 
@@ -82,6 +83,7 @@ public class ApenHisHttpApiHostModule : AbpModule
         ConfigureBundles();
         ConfigureUrls(configuration);
         ConfigureConventionalControllers();
+        ConfigureAutoMapper();
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
@@ -133,6 +135,13 @@ public class ApenHisHttpApiHostModule : AbpModule
 
             //options.Applications["Angular"].RootUrl = configuration["App:ClientUrl"];
             //options.Applications["Angular"].Urls[AccountUrlNames.PasswordReset] = "account/reset-password";
+        });
+    }
+    private void ConfigureAutoMapper()
+    {
+        Configure<AbpAutoMapperOptions>(options =>
+        {
+            options.AddMaps<Elsa.Server.Api.Mapping.AutoMapperProfile>();
         });
     }
 
