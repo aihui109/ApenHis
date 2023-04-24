@@ -19,12 +19,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elsa" Version="2.11.0" />
-    <PackageReference Include="Elsa.Activities.Http" Version="2.11.0" />
-    <PackageReference Include="Elsa.Activities.Temporal.Quartz" Version="2.11.0" />
-    <PackageReference Include="Elsa.Designer.Components.Web" Version="2.11.0" />
-    <PackageReference Include="Elsa.Persistence.EntityFramework.SqlServer" Version="2.11.0" />
-    <PackageReference Include="Elsa.Server.Api" Version="2.11.0" />
+    <PackageReference Include="Elsa" Version="2.11.1" />
+    <PackageReference Include="Elsa.Activities.Http" Version="2.11.1" />
+    <PackageReference Include="Elsa.Activities.Temporal.Quartz" Version="2.11.1" />
+    <PackageReference Include="Elsa.Designer.Components.Web" Version="2.11.1" />
+    <PackageReference Include="Elsa.Persistence.EntityFramework.SqlServer" Version="2.11.1" />
+    <PackageReference Include="Elsa.Server.Api" Version="2.11.1" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
