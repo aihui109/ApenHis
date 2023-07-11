@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="taxi-fare-train.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="taxi-fare-train.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML" Version="2.0.1" />
+    <PackageReference Include="Microsoft.ML.AutoML" Version="0.20.1" />
+    <PackageReference Include="Microsoft.ML.FastTree" Version="2.0.1" />
+    <PackageReference Include="Microsoft.ML.LightGbm" Version="2.0.1" />
+  </ItemGroup>
+
+</Project>
