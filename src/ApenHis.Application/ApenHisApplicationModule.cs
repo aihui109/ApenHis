@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Account;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
@@ -23,6 +24,7 @@ public class ApenHisApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        context.Services.AddAutoMapperObjectMapper<ApenHisApplicationModule>();
         Configure<AbpAutoMapperOptions>(options =>
         {
             options.AddMaps<ApenHisApplicationModule>();
