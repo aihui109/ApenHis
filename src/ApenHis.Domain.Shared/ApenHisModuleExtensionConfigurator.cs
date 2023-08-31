@@ -1,7 +1,13 @@
 ﻿using ApenHis.EntityExtensions;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Reflection;
 using Volo.Abp.Identity;
+using Volo.Abp.Localization;
 using Volo.Abp.ObjectExtending;
+using Volo.Abp.ObjectExtending.Modularity;
 using Volo.Abp.Threading;
 
 namespace ApenHis;
@@ -76,15 +82,52 @@ public static class ApenHisModuleExtensionConfigurator
               {
                   identity.ConfigureUser(user =>
                   {
-                      user.AddOrUpdateProperty<string>(
-                          nameof(Operator.InputCode),
-                          property =>
-                          {
-                              property.Attributes.Add(new RequiredAttribute() { AllowEmptyStrings = false, ErrorMessage = "拼音码不能为空" });
-                              property.Attributes.Add(new StringLengthAttribute(50) { ErrorMessage = "拼音码长度不能超过50个字符" });
-                          }
-                      );
+                       AddOrUpdateProperty<UserExt>(user);
                   });
               });
+    }
+    
+     private static void AddOrUpdateProperty<T>(EntityExtensionConfiguration extensionConfiguration) where T : class
+    {
+        AddOrUpdateProperty(typeof(T).GetProperties(), 0, extensionConfiguration);
+
+        void AddOrUpdateProperty(PropertyInfo[] properties, int index, EntityExtensionConfiguration extensionConfiguration)
+        {
+            if (index < properties.Length)
+            {
+                var item = properties[index];
+                AddOrUpdateProperty(properties, ++index, extensionConfiguration.AddOrUpdateProperty(item.PropertyType, item.Name, options =>
+                {
+                    var attrs = item.GetCustomAttributes()?.Where(m => m is not ColumnAttribute and not DatabaseGeneratedAttribute);
+                    if (attrs != null)
+                    {
+                        foreach (var attr in attrs.OrderByDescending(m => m is DisplayAttribute))
+                        {
+                            switch (attr)
+                            {
+                                case DisplayAttribute displayAttr:
+                                    options.DisplayName = new FixedLocalizableString(displayAttr.Name);
+                                    break;
+                                case StringLengthAttribute lengthAttr when lengthAttr.ErrorMessage.IsNullOrWhiteSpace():
+                                    lengthAttr.ErrorMessage = $"{options.DisplayName.Localize(null).Value}不能超过{lengthAttr.MaximumLength}位";
+                                    goto default;
+                                case StringLengthAttribute lengthAttr when lengthAttr.ErrorMessage?.Contains("{0}") == true:
+                                    lengthAttr.ErrorMessage = string.Format(lengthAttr.ErrorMessage, options.DisplayName.Localize(null).Value);
+                                    goto default;
+                                case RegularExpressionAttribute regularAttr when regularAttr.ErrorMessage.IsNullOrWhiteSpace():
+                                    regularAttr.ErrorMessage = $"{options.DisplayName.Localize(null).Value}不满足输入格式";
+                                    goto default;
+                                case RegularExpressionAttribute regularAttr when regularAttr.ErrorMessage?.Contains("{0}") == true:
+                                    regularAttr.ErrorMessage = string.Format(regularAttr.ErrorMessage, options.DisplayName.Localize(null).Value);
+                                    goto default;
+                                default:
+                                    options.Attributes.Add(attr);
+                                    break;
+                            }
+                        }
+                    }
+                }));
+            }
+        }
     }
 }
