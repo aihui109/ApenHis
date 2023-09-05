@@ -42,6 +42,7 @@ using Microsoft.Net.Http.Headers;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
 using Volo.Abp.AutoMapper;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace ApenHis;
 
@@ -280,7 +281,14 @@ public class ApenHisHttpApiHostModule : AbpModule
         }
 
         app.UseCorrelationId();
-        app.UseStaticFiles();
+        // Set up custom content types - associating file extension to MIME type
+        var provider = new FileExtensionContentTypeProvider();
+        // Add new mappings
+        provider.Mappings[".oform"] = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            ContentTypeProvider = provider
+        });
         if (env.IsDevelopment())
         {
             app.UseODataRouteDebug();
