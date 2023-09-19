@@ -9,13 +9,17 @@
       // window.Asc.plugin.executeMethod("GetFormValue", ["2702"], function (res) {
       //   console.log(res)
       // });
-      window.Asc.plugin.executeMethod ("SetFormValue", ["2702", "true"]);
       window.Asc.plugin.executeMethod ("GetAllForms", null, function (data) {
         for (var i = 0; i < data.length; i++) {
-            if (data[i].InternalId == "2702") {
-                this.Asc.plugin.executeMethod ("SelectContentControl", [data[i].InternalId]);
-                break;
+            if (data[i].Tag == "Text1") {
+                // this.Asc.plugin.executeMethod ("SelectContentControl", [data[i].InternalId]);
+                window.Asc.plugin.executeMethod ("SetFormValue", [data[i].InternalId, "true"]);
+                continue;
             }
+            if (data[i].Tag == "Text2") {
+              window.Asc.plugin.executeMethod ("SetFormValue", [data[i].InternalId, "false"]);
+              continue;
+          }
         }
     });
     }
