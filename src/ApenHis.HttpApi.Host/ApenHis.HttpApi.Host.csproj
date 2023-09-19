@@ -54,6 +54,7 @@
     <None Include="Pages\Account\Login.cshtml" />
     <None Include="Pages\ElsaDashboard.cshtml" />
     <None Include="Pages\_ViewImports.cshtml" />
+    <None Include="wwwroot\plugins\plugin-hello\main.js" />
   </ItemGroup>
 
 </Project>

@@ -281,7 +281,14 @@ public class ApenHisHttpApiHostModule : AbpModule
         }
 
         app.UseCorrelationId();
-        // Set up custom content types - associating file extension to MIME type
+       
+        if (env.IsDevelopment())
+        {
+            app.UseODataRouteDebug();
+        }
+        app.UseRouting();
+        app.UseCors();
+         // Set up custom content types - associating file extension to MIME type
         var provider = new FileExtensionContentTypeProvider();
         // Add new mappings
         provider.Mappings[".oform"] = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -289,12 +296,6 @@ public class ApenHisHttpApiHostModule : AbpModule
         {
             ContentTypeProvider = provider
         });
-        if (env.IsDevelopment())
-        {
-            app.UseODataRouteDebug();
-        }
-        app.UseRouting();
-        app.UseCors();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
 
