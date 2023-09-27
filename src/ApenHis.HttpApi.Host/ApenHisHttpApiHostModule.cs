@@ -291,7 +291,9 @@ public class ApenHisHttpApiHostModule : AbpModule
          // Set up custom content types - associating file extension to MIME type
         var provider = new FileExtensionContentTypeProvider();
         // Add new mappings
+        provider.Mappings[".docxf"] = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
         provider.Mappings[".oform"] = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        provider.Mappings[".docbuilder"] = "application/onlyoffice.document.builder";
         app.UseStaticFiles(new StaticFileOptions
         {
             ContentTypeProvider = provider
