@@ -61,6 +61,10 @@ public class ApenHisHttpApiHostModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
+        PreConfigure<OpenIddictServerBuilder>(options =>
+        {
+            options.UseAspNetCore().DisableTransportSecurityRequirement();
+        });
         PreConfigure<OpenIddictBuilder>(builder =>
         {
             builder.AddValidation(options =>
@@ -79,7 +83,10 @@ public class ApenHisHttpApiHostModule : AbpModule
         Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
 #endif
         var configuration = context.Services.GetConfiguration();
-
+        Configure<OpenIddictServerAspNetCoreBuilder>(options =>
+        {
+            options.DisableTransportSecurityRequirement();
+        });
         ConfigureAuthentication(context);
         ConfigureBundles();
         ConfigureUrls(configuration);
@@ -182,7 +189,6 @@ public class ApenHisHttpApiHostModule : AbpModule
     {
         context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
     }
-
 
     private static void ConfigureSwaggerServices(ServiceConfigurationContext context, IConfiguration configuration)
     {
