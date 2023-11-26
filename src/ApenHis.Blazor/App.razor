@@ -1,35 +1,86 @@
 ﻿@inject NavigationManager NavigationManager;
-<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(Program).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                <NotAuthorized>
-                    @if (context.User.Identity?.IsAuthenticated != true)
-                    {
-                       <RedirectToLogin/>
-                    }
-                    else
-                    {
-                        <p role="alert">You are not authorized to access this resource.</p>
-                    }
-                </NotAuthorized>
-            </AuthorizeRouteView>
-        </Found>
-        <NotFound>
-            <PageTitle>404</PageTitle>
-            <AuthorizeView>
-                <NotAuthorized>
-                    <LayoutView Layout="@typeof(UserLayout)">
-                        <ApenHis.Blazor.Pages.Exception._404/>
-                    </LayoutView>
-                </NotAuthorized>
-                <Authorized>
-                    <LayoutView Layout="@typeof(MainLayout)">
-                        <ApenHis.Blazor.Pages.Exception._404 />
-                    </LayoutView>
-                </Authorized>
-            </AuthorizeView>
-        </NotFound>
-    </Router>
-    <AntContainer />
-</CascadingAuthenticationState>
+  <CascadingAuthenticationState>
+     <Router AppAssembly="@typeof(Program).Assembly">
+         <Found Context="routeData">
+             <CascadingValue Value="routeData">
+                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                     <NotAuthorized>
+                         @if (context.User.Identity?.IsAuthenticated != true)
+                         {
+                            <RedirectToLogin/>
+                         }
+                         else
+                         {
+                             <p role="alert">You are not authorized to access this resource.</p>
+                         }
+                     </NotAuthorized>
+                 </AuthorizeRouteView>
+             </CascadingValue>
+         </Found>
+         <NotFound>
+             <PageTitle>404</PageTitle>
+             <AuthorizeView>
+                 <NotAuthorized>
+                     <LayoutView Layout="@typeof(UserLayout)">
+                         <ApenHis.Blazor.Pages.Exception._404/>
+                     </LayoutView>
+                 </NotAuthorized>
+                 <Authorized>
+                     <LayoutView Layout="@typeof(MainLayout)">
+                         <ApenHis.Blazor.Pages.Exception._404 />
+                     </LayoutView>
+                 </Authorized>
+             </AuthorizeView>
+         </NotFound>
+     </Router>
+     <AntContainer />
+ </CascadingAuthenticationState>
+
+@* <Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <CascadingValue Value="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                @if (context.User.Identity?.IsAuthenticated != true)
+                {
+                    <RedirectToLogin />
+                }
+                else
+                {
+                    <p role="alert">You are not authorized to access this resource.</p>
+                }
+            </NotAuthorized>
+        </AuthorizeRouteView>
+        </CascadingValue>
+    </Found>
+    <NotFound>
+        <PageTitle>404</PageTitle>
+        <AuthorizeView>
+            <NotAuthorized>
+                <LayoutView Layout="@typeof(UserLayout)">
+                    <ApenHis.Blazor.Pages.Exception._404 />
+                </LayoutView>
+            </NotAuthorized>
+            <Authorized>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <ApenHis.Blazor.Pages.Exception._404 />
+                </LayoutView>
+            </Authorized>
+        </AuthorizeView>
+    </NotFound>
+</Router>
+<AntContainer /> *@
+@* 
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <CascadingValue Value="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        </CascadingValue>
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(UserLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+<AntContainer /> *@
