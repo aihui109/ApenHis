@@ -13,9 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elsa" Version="2.11.1" />
-    <PackageReference Include="Elsa.Activities.Http" Version="2.11.1" />
-    <PackageReference Include="Elsa.Server.Api" Version="2.11.1" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.1.2" />
     <PackageReference Include="Volo.Abp.Account.HttpApi" Version="7.4.2" />
     <PackageReference Include="Volo.Abp.Identity.HttpApi" Version="7.4.2" />

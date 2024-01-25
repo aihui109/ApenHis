@@ -12,11 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elsa" Version="2.11.1" />
-    <PackageReference Include="Elsa.Activities.Http" Version="2.11.1" />
-    <PackageReference Include="Elsa.Activities.Temporal.Quartz" Version="2.11.1" />
-    <PackageReference Include="Elsa.Persistence.EntityFramework.SqlServer" Version="2.11.1" />
-    <PackageReference Include="Elsa.Server.Api" Version="2.11.1" />
+    <PackageReference Include="Elsa" Version="2.13.0" />
+    <PackageReference Include="Elsa.Activities.Http" Version="2.13.0" />
+    <PackageReference Include="Elsa.Activities.Temporal.Quartz" Version="2.13.0" />
+    <PackageReference Include="Elsa.Persistence.EntityFramework.SqlServer" Version="2.13.0" />
+    <PackageReference Include="Elsa.Server.Api" Version="2.13.0" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="Volo.Abp.Emailing" Version="7.4.2" />
     <PackageReference Include="Volo.Abp.Identity.Domain" Version="7.4.2" />
